@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS school (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    province VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL  
+) Engine = InnoDB

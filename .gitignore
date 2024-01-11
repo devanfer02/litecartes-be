@@ -1,0 +1,5 @@
+.env
+node_modules
+.VSCodeCounter
+TODO.txt
+config/litecartes-firebase-sdk.json
