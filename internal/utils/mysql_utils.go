@@ -51,7 +51,7 @@ func GetPaginationOperator(pointNext bool) string {
 
 func CreateCursor(createdAt time.Time, next bool, limit int) domain.Cursor {
     return domain.Cursor{
-        CreatedAt: createdAt.Format("2006-01-02"),   
+        CreatedAt: createdAt.Format("2006-01-02 15:04:05"),   
         PointNext: next,
         LimitData: limit,
     }

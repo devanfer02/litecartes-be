@@ -52,7 +52,7 @@ func(u *questionUsecase) FetchByUID(
     question, err := u.queRepo.FetchOneByArg(c, "uid", uid)
 
     if err != nil {
-        return domain.Question{}, nil 
+        return domain.Question{}, err
     }
 
     return question, nil 
@@ -70,6 +70,7 @@ func(u *questionUsecase) Insert(
     c, cancel := context.WithTimeout(ctx, u.ctxTimeout)
     defer cancel()
 
+    question.UID = utils.CreateUUID() + "-QST"
     err := u.queRepo.InsertQuestion(c, question)
 
     if err != nil {

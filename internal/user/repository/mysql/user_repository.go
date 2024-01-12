@@ -79,7 +79,7 @@ func (m *mysqlUserRepository) fetchPaged(ctx context.Context, cursor domain.Curs
     var query string 
     var users []domain.User
     var err error 
-
+    
     if cursor.CreatedAt == "" {
         query = "SELECT * FROM user ORDER BY created_at LIMIT ?"
         users, err = m.fetch(ctx, query, cursor.LimitData)

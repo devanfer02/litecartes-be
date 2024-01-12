@@ -26,14 +26,14 @@ func(m *mysqlQuestionRepository) fetch(
     rows, err := m.Conn.QueryContext(ctx, query, args...)
 
     if err != nil {
-        log.Printf("error querying to question table. ERR:%s\n", err.Error())
+        log.Printf("[REPOSITORY] error querying to question table. ERR:%s\n", err.Error())
         return nil, domain.ErrServerError
     }
 
     defer func(){
         err := rows.Close()
         if err != nil {
-            log.Printf("failed to close rows. ERR:%s\n", err.Error())
+            log.Printf("[REPOSITORY] failed to close rows. ERR:%s\n", err.Error())
         }
     }()
     
@@ -50,7 +50,7 @@ func(m *mysqlQuestionRepository) fetch(
         )
 
         if err != nil {
-            log.Printf("failed to scan row. ERR:%s\n", err.Error())
+            log.Printf("[REPOSITORY] failed to scan row. ERR:%s\n", err.Error())
             return nil, err 
         }
 
@@ -66,11 +66,11 @@ func (m *mysqlQuestionRepository) fetchPaged(ctx context.Context, cursor domain.
     var err error 
 
     if cursor.CreatedAt == "" {
-        query = "SELECT * FROM question ORDER BY created_at LIMIT ?"
+        query = "SELECT question.uid, question_category.category_name, question.literacy, question.answer FROM question JOIN question_category ON question.category_id = question_category.uid ORDER BY question.created_at LIMIT ?"
         questions, err = m.fetch(ctx, query, cursor.LimitData)
     } else {
         query = fmt.Sprintf(
-            "SELECT * FROM question WHERE created_at %s ? ORDER BY created_at LIMIT ?", 
+            "SELECT question.uid, question_category.category_name, question.literacy, question.answer FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.created_at %s ? ORDER BY question.created_at LIMIT ?", 
             utils.GetPaginationOperator(cursor.PointNext),
         )
         questions, err = m.fetch(ctx, query, cursor.CreatedAt, cursor.LimitData)
@@ -103,7 +103,7 @@ func(m *mysqlQuestionRepository) FetchOneByArg(
     param,
     arg string,
 ) (domain.Question, error) {
-    query := fmt.Sprintf("SELECT * FROM question WHERE %s = ? LIMIT 1", param)
+    query := fmt.Sprintf("SELECT question.uid, question_category.category_name, question.literacy, question.answer FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.%s = ? LIMIT 1", param)
 
     questions, err := m.fetch(ctx, query, arg)
 
@@ -128,7 +128,7 @@ func(m *mysqlQuestionRepository) InsertQuestion(
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
     if err != nil {
-        log.Printf("failed to prepare statement. ERR:%s\n", err.Error())
+        log.Printf("[REPOSITORY] failed to prepare statement. ERR:%s\n", err.Error())
         return err 
     }
 
@@ -137,7 +137,7 @@ func(m *mysqlQuestionRepository) InsertQuestion(
     _, err = stmt.ExecContext(ctx, question.UID, question.CategoryID, question.Literacy, question.Answer, currTime, currTime)
 
     if err != nil {
-        log.Printf("failed to execute statement. ERR:%s\n", err.Error())
+        log.Printf("[REPOSITORY] failed to execute statement. ERR:%s\n", err.Error())
         return err 
     }
 
@@ -153,7 +153,7 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
     if err != nil {
-        log.Printf("failed to prepare statement. ERR:%s\n", err.Error())
+        log.Printf("[REPOSITORY] failed to prepare statement. ERR:%s\n", err.Error())
         return err 
     }
 
@@ -164,13 +164,16 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
         if err == sql.ErrNoRows {
             return domain.ErrNotFound
         }
-        log.Printf("failed to exec statement. ERR:%s\n", err.Error())
+        log.Printf("[REPOSITORY] failed to exec statement. ERR:%s\n", err.Error())
         return err 
     }
 
     affected, _ := rows.RowsAffected()
 
     if affected != 1 {
+        if affected == 0 {
+            return domain.ErrNotFound
+        }
         return fmt.Errorf("weird behaviour. rows affected: %v\n", affected)
     }
 
@@ -186,18 +189,19 @@ func(m *mysqlQuestionRepository) DeleteQuestion(
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
     if err != nil {
-        log.Printf("failed to prepare statement. ERR:%s\n", err.Error())
+        log.Printf("[REPOSITORY] failed to prepare statement. ERR:%s\n", err.Error())
         return err 
     }
 
-    _, err = stmt.ExecContext(ctx, uid)
+    rows, err := stmt.ExecContext(ctx, uid)
 
-    if err != nil {
-        if err == sql.ErrNoRows {
+    affected, _ := rows.RowsAffected()
+
+    if affected != 1 {
+        if affected == 0 {
             return domain.ErrNotFound
         }
-        log.Printf("failed to execute statement. ERR:%s\n", err.Error())
-        return err 
+        return fmt.Errorf("weird behaviour. rows affected: %v\n", affected)
     }
 
     return nil 

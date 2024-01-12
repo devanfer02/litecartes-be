@@ -1,33 +1,29 @@
-import { useState } from "react"
-// import useFetch from "../../utils/useFetch"
+import axios from "axios"
+import useFetch from "../../utils/useFetch"
 
 interface Question {
+  uid: string 
   category_id: number 
   literacy: string 
   answer: string 
 }
 
-const questionsList = [
-  {
-    category_id: 1,
-    literacy: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam expedita non quidem deserunt, accusantium autem ab ullam rerum optio fugiat tempora placeat delectus. Illo debitis voluptatibus reprehenderit dolorum, quas sequi?',
-    answer: 'A'
-  },
-  {
-    category_id: 1,
-    literacy: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam expedita non quidem deserunt, accusantium autem ab ullam rerum optio fugiat tempora placeat delectus. Illo debitis voluptatibus reprehenderit dolorum, quas sequi?',
-    answer: 'A'
-  }
-]
-
 export default function QuestionList() {
-  // const [ users, refetch, error ] = useFetch<User>(import.meta.env.VITE_API_URL + '/user')
-  const [ questions ] = useState<Question[]>(questionsList)
-  const [ error ] = useState<string | null>(null)
+  const [ questions, refetch, error ] = useFetch<Question>(import.meta.env.VITE_API_URL + '/questions')
 
-  // useEffect(() => {
-  //   refetch()
-  // }, [])
+  const deleteQuestion = async (uid: string) => {
+    try {
+      const res = await axios.delete(import.meta.env.VITE_API_URL + `/questions/${uid}`)
+
+      if (res.status != 200)  { 
+        throw Error("question not found")
+      }
+
+      refetch()
+    } catch(e) {
+      console.log(e as Error)
+    }
+  }
 
   return (
     <section className="ml-72 mt-16 mr-24">
@@ -58,13 +54,13 @@ export default function QuestionList() {
                     <th scope="col" className="px-6 py-3">
                         No 
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         Category ID
                     </th>
                     <th scope="col" className="px-6 py-3">
                         Literacy
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-center">
                         Answer
                     </th>
                     <th scope="col" className="px-6 py-3 text-center">
@@ -87,11 +83,15 @@ export default function QuestionList() {
                     <td className="px-6 py-4 text-center">
                         { question.answer }
                     </td>
-                    <td className="px-6 py-4 text-center flex text-white font-semibold">
-                        <a href="/questions/edit" className="bg-green-600 hover:bg-green-900 duration-300 ease-in-out mx-1 px-4 py-2 rounded-md">
+                    <td className="px-6 py-4 text-center flex text-white font-semibold justify-center items-center">
+                        <a href={`/questions/edit/${question.uid}`} className="bg-green-600 hover:bg-green-900 duration-300 ease-in-out mx-1 px-4 py-2 rounded-md">
                           Edit Question
                         </a>
-                        <button type="button" className="bg-red-600 hover:bg-red-900 duration-300 ease-in-out mx-1 px-4 py-2 rounded-md">
+                        <button 
+                          type="button" 
+                          className="bg-red-600 hover:bg-red-900 duration-300 ease-in-out mx-1 px-4 py-2 rounded-md"
+                          onClick={() => deleteQuestion(question.uid)}
+                        >
                           Delete Question
                         </button>
                     </td>

@@ -39,7 +39,7 @@ const protectedPages = [
     title: 'Add Question'
   },
   {
-    path: '/questions/edit',
+    path: '/questions/edit/:id',
     render: <EditQuestion/>,
     title: 'Edit Question'
   },

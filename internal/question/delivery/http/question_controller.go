@@ -18,12 +18,12 @@ func InitQuestionController(qUcase domain.QuestionUsecase, r *gin.Engine) {
         queUcase: qUcase,
     }
 
-    qR := r.Group("/question").Use(_mdlwr.CORS())
+    qR := r.Group("/questions").Use(_mdlwr.CORS())
     qR.GET("", qCtr.Fetch)
     qR.GET("/:uid", qCtr.FetchByUID)
-    qR.POST("", qCtr.InsertQuestion)
+    qR.POST("", qCtr.CreateQuestion)
     qR.PUT("/:uid", qCtr.UpdateQuestion)
-    qR.DELETE("", qCtr.DeleteQuestion)
+    qR.DELETE("/:uid", qCtr.DeleteQuestion)
 }
 
 func(c *QuestionController) Fetch(ctx *gin.Context) {
@@ -56,7 +56,7 @@ func(c *QuestionController) FetchByUID(ctx *gin.Context) {
     res.SendResponse(ctx, code, "successfully fetch question", question, nil)
 }
 
-func(c *QuestionController) InsertQuestion(ctx *gin.Context) {
+func(c *QuestionController) CreateQuestion(ctx *gin.Context) {
     var question domain.Question 
 
     if utils.BindingFailed(ctx, &question) {

@@ -23,12 +23,12 @@ func NewMysqlConn() *sql.DB {
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Fatalf("Failed to open database. ERR: %s\n", err.Error())
+		log.Fatalf("[MYSQL] Failed to open database. ERR: %s\n", err.Error())
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("Could not ping database. ERR: %s\n", err.Error())
+		log.Fatalf("[MYSQL] Could not ping database. ERR: %s\n", err.Error())
 	}
 
     // gotta be in correct order to form foreign key constraint
@@ -48,23 +48,22 @@ func migrate(db *sql.DB, migrationspath ...string) {
 	for _, filename := range migrationspath {
 		filecontent, err := os.ReadFile(filename)
 		if err != nil {
-			log.Fatalf("Failed to read migration file {%s}. ERR: %s\n", filename, err.Error())
+			log.Fatalf("[MYSQL] Failed to read migration file {%s}. ERR: %s\n", filename, err.Error())
 		}
 
 		_, err = db.Exec(string(filecontent))
 		if err != nil {
-			log.Fatalf("Failed to execute migration file {%s}. ERR: %s\n", filename, err.Error())
+			log.Fatalf("[MYSQL] Failed to execute migration file {%s}. ERR: %s\n", filename, err.Error())
 		}
 
-		log.Printf("Migration file {%s} success\n", filename)
+		log.Printf("[MYSQL] Migration file {%s} success\n", filename)
 	}
 }
 
 func GenerateSeeders(db *sql.DB) {
     seeders(
         db, 
-        "bootstrap/database/mysql/migrations/create_question_category_seeders.sql",
-        "bootstrap/database/mysql/migrations/create_question_seeders.sql",
+        "bootstrap/database/mysql/seeders/create_question_category_seeders.sql",
     )
     log.Printf("Seeders Generated!\n")
 }
@@ -73,14 +72,14 @@ func seeders(db *sql.DB, seederspath ...string) {
     for _, filename := range seederspath {
 		filecontent, err := os.ReadFile(filename)
 		if err != nil {
-			log.Fatalf("Failed to read seeders file {%s}. ERR: %s\n", filename, err.Error())
+			log.Fatalf("[MYSQL] Failed to read seeders file {%s}. ERR: %s\n", filename, err.Error())
 		}
 
 		_, err = db.Exec(string(filecontent))
 		if err != nil {
-			log.Fatalf("Failed to execute seeders file {%s}. ERR: %s\n", filename, err.Error())
+			log.Fatalf("[MYSQL] Failed to execute seeders file {%s}. ERR: %s\n", filename, err.Error())
 		}
 
-		log.Printf("Seeders file {%s} success\n", filename)
+		log.Printf("[MYSQL] Seeders file {%s} success\n", filename)
 	}
 }

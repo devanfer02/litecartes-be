@@ -34,7 +34,7 @@ export default function UserList() {
         </button>
         <button 
           className="font-semibold text-lg bg-ltcbrown text-white px-2 rounded-md border border-ltcbrown hover:bg-white hover:text-ltcbrown duration-200 ease-in-out ml-2"
-          onClick={() =>{ setCursorReq(cursor!.next_cursor); setNext(true) }}
+          onClick={() =>{ setCursorReq(cursor!.next_cursor); setNext(true); }}
         >
           &gt;
         </button>

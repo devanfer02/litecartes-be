@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
+func main() {    
     mysqldb := mysql.NewMysqlConn()
     defer mysqldb.Close()
 
@@ -25,6 +25,7 @@ func main() {
     app.Use(mdlwr.CORS())
 
     bootstrap.InitRoutes(app, mysqldb)
+
 
     app.Run(fmt.Sprintf(":%s", env.ProcEnv.ServerAddress))
 }
