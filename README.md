@@ -1,6 +1,20 @@
 # Litecartes Backend
 
-## Development Setup
+![mockup](./docs/mockup1.png)
+
+Litecartes is an application made to aim address Sustainable Development Goals point 4, Quality Education. With our gamification application product, we aim to increase the literacy level and critical thinking of the future generations
+
+## Team Members
+#### Team Name : ```Kusushi```
+
+Name | Role
+-- |--
+Devan Ferrel | Hacker
+I Gusti Ngurah Ryo Adi Tarta | Hacker
+Wilson Hamonangan Ariyanto Hutapea  | Hustler
+Sarah Safira Millati | Hipster
+
+## Server Side Development Setup
 To get started with setup litecartes backend, you can follow the following steps.
 
 1. Clone this repository
