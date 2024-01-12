@@ -7,10 +7,12 @@ To get started with setup litecartes backend, you can follow the following steps
 2. Navigate to the directory with ```$ cd litecartes-be```
 
 You can use the manual here or bash script to automatically process some steps
+
 #### Bash Script
 3. Change ```cmd/init.sh``` to be executeable with command ```$ chmod +x cmd/init.sh```
 4. Run command ```$ cmd/init.sh```
-5. After done, configure the rest 
+5. After done, configure the rest like ```.env``` and firebase admin sdk config in ```config/litecartes-firebase-sdk.json
+6. If done, then run the server with command ```$ go run app/main.go```
 
 #### Manual
 3. Install the dependencies needed with ```$ go mod download```
