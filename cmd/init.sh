@@ -16,4 +16,5 @@ cp ".env.example" ".env"
 echo "downloading application needed dependancies"
 go mod download
 
-echo "initialization complete. proceed to configure .env, firebase-sdk.json and run the server"
+echo "initialization complete."
+echo "proceed to configure .env, firebase-sdk.json and run the server"

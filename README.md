@@ -25,7 +25,7 @@ You can use the manual here or bash script to automatically process some steps
 #### Bash Script
 3. Change ```cmd/init.sh``` to be executeable with command ```$ chmod +x cmd/init.sh```
 4. Run command ```$ cmd/init.sh```
-5. After done, configure the rest like ```.env``` and firebase admin sdk config in ```config/litecartes-firebase-sdk.json
+5. After done, configure the rest like ```.env``` and firebase admin sdk config in ```config/litecartes-firebase-sdk.json```
 6. If done, then run the server with command ```$ go run app/main.go```
 
 #### Manual
