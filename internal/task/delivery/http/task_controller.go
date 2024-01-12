@@ -14,7 +14,7 @@ func InitTaskController(r *gin.Engine) {
     tCtr := &TaskController{}
 
     tR := r.Group("/tasks").Use(_mdlwr.CORS())
-    tR.GET("", tCtr.Fetch)
+    tR.GET("", tCtr.FetchTask)
     tR.GET("/:uid", tCtr.FetchWithQuestions)
     tR.POST("", tCtr.CreateTask)
     tR.PUT("/:uid", tCtr.UpdateTask)

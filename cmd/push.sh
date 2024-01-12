@@ -12,5 +12,5 @@ if [ -z "$2" ]; then
 fi
 
 git add . 
-git commit -m "$1"
+git commit -m "$1: $2"
 git push origin main
