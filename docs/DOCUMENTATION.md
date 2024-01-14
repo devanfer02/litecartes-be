@@ -16,6 +16,7 @@
 ## API Endpoints
 ### 1. [User](#user)
 ### 2. [Question](#question)
+### 3. [Task](#task)
 
 ## User
 ### 1. Fetch All Users    
@@ -174,17 +175,18 @@ Response Body :
     "message": "successfully fetch questions",
     "data": [
         {
-            "uid": "LTC-APP-7e6db33e-82b6-4ccb-b7ae-e54f99585707",
+            "uid": "LTC-APP-52485f45-7b6d-4881-ba71-60ab731a2067-QST",
             "category_id": "Pilihan Ganda",
-            "literacy": "big ass holy shieett text",
+            "task_uid": "",
+            "literacy": "big ass text",
             "answer": "A",
-            "created_at": "0001-01-01T00:00:00Z",
-            "updated_at": "0001-01-01T00:00:00Z"
+            "created_at": "2024-01-14T16:26:01Z",
+            "updated_at": "2024-01-14T16:26:01Z"
         }
     ],
     "pagination": {
-        "prev_cursor": "eyJjcmVhdGVkX2F0IjoiMDAwMS0wMS0wMSAwMDowMDowMCIsInBvaW5fbmV4dCI6ZmFsc2UsImxpbWl0X2RhdGEiOjEwfQ==",
-        "next_cursor": "eyJjcmVhdGVkX2F0IjoiMDAwMS0wMS0wMSAwMDowMDowMCIsInBvaW5fbmV4dCI6dHJ1ZSwibGltaXRfZGF0YSI6MTB9",
+        "prev_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNC0wMS0xNCAxNjoyNjowMSIsInBvaW5fbmV4dCI6ZmFsc2UsImxpbWl0X2RhdGEiOjEwfQ==",
+        "next_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNC0wMS0xNCAxNjoyNjowMSIsInBvaW5fbmV4dCI6dHJ1ZSwibGltaXRfZGF0YSI6MTB9",
         "limit": 10
     }
 }
@@ -203,12 +205,13 @@ Response Body
     "status": 200,
     "message": "successfully fetch question",
     "data": {
-        "uid": "LTC-APP-7e6db33e-82b6-4ccb-b7ae-e54f99585707",
+        "uid": "LTC-APP-52485f45-7b6d-4881-ba71-60ab731a2067-QST",
         "category_id": "Pilihan Ganda",
-        "literacy": "big ass holy shieett text",
+        "task_uid": "",
+        "literacy": "big ass text",
         "answer": "A",
-        "created_at": "0001-01-01T00:00:00Z",
-        "updated_at": "0001-01-01T00:00:00Z"
+        "created_at": "2024-01-14T16:26:01Z",
+        "updated_at": "2024-01-14T16:26:01Z"
     }
 }
 ```
@@ -221,11 +224,12 @@ HTTP Response :
 - ```500 Internal Server Error```
 
 Json Required Payload  : 
-Field | Datatype | 
---- | --- | 
-category_id | string | 
-literacy | string | 
-answer | string | 
+Field | Datatype | required
+--- | --- | --- |
+category_id | string | yes
+task_uid | string | no
+literacy | string | yes
+answer | string | yes
 
 Response Body : 
 ```
@@ -233,8 +237,9 @@ Response Body :
     "status": 200,
     "message": "successfully insert question",
     "data": {
-        "uid": "LTC-APP-7e6db33e-82b6-4ccb-b7ae-e54f99585707",
+        "uid": "LTC-APP-52485f45-7b6d-4881-ba71-60ab731a2067-QST",
         "category_id": "LTC-APP-generated1",
+        "task_uid": "",
         "literacy": "big ass text",
         "answer": "A",
         "created_at": "0001-01-01T00:00:00Z",
@@ -252,11 +257,12 @@ HTTP Response :
 - ```500 Internal Server Error```
 
 Json Required Payload  : 
-Field | Datatype | 
---- | --- | 
-category_id | string | 
-literacy | string | 
-answer | string | 
+Field | Datatype | required
+--- | --- | --- |
+category_id | string | yes
+task_uid | string | no
+literacy | string | yes
+answer | string | yes
 
 Response Body : 
 ```
@@ -290,3 +296,159 @@ Response Body
 }
 ```
  
+## Task
+
+### 1. Fetch All Task
+Method : ```GET```   
+Endpoint : ```/tasks```    
+HTTP Response : 
+- ```200 OK```
+- ```500 Internal Server Error```
+
+Response Body : 
+
+```
+{
+    "status": 200,
+    "message": "successfully fetch all tasks",
+    "data": [
+        {
+            "uid": "LTC-APP-51830a4e-ede7-4097-8f4c-ba7cfc7a9e94-TSK",
+            "level": 1,
+            "sign": "number",
+            "level_category_id": 1,
+            "completed": 0,
+            "created_at": "2024-01-14T18:18:53Z",
+            "updated_at": "2024-01-14T18:18:53Z"
+        }
+    ],
+    "pagination": {
+        "prev_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNC0wMS0xNCAxODoxODo1MyIsInBvaW5fbmV4dCI6ZmFsc2UsImxpbWl0X2RhdGEiOjEwfQ==",
+        "next_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNC0wMS0xNCAxODoxODo1MyIsInBvaW5fbmV4dCI6dHJ1ZSwibGltaXRfZGF0YSI6MTB9",
+        "limit": 10
+    }
+}
+```
+
+### 2. Fetch Task By User UID
+
+Method : ```GET```    
+Endpoint : ```/tasks/users/:uid```    
+HTTP Response : 
+- ```200 OK```
+- ```500 Internal Server Error```
+
+Response Body : 
+
+```
+{
+    "status": 200,
+    "message": "successfully fetch tasks by user uid",
+    "data": [
+        {
+            "uid": "LTC-APP-51830a4e-ede7-4097-8f4c-ba7cfc7a9e94-TSK",
+            "level": 1,
+            "sign": "number",
+            "level_category_id": 1,
+            "completed": 0, // 0 means not completed yet, 1 means completed task
+            "created_at": "2024-01-14T18:18:53Z",
+            "updated_at": "2024-01-14T18:18:53Z"
+        }
+    ],
+    "pagination": {
+        "prev_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNC0wMS0xNCAxODoxODo1MyIsInBvaW5fbmV4dCI6ZmFsc2UsImxpbWl0X2RhdGEiOjEwfQ==",
+        "next_cursor": "eyJjcmVhdGVkX2F0IjoiMjAyNC0wMS0xNCAxODoxODo1MyIsInBvaW5fbmV4dCI6dHJ1ZSwibGltaXRfZGF0YSI6MTB9",
+        "limit": 10
+    }
+}
+```
+
+
+### 3. Fetch Task With Questions
+
+Method : ```GET```    
+Endpoint : ```/tasks/:uid```     
+HTTP Response : 
+- ```200 OK```
+- ```404 Not Found```
+- ```500 Internal Server Error```
+
+Response Body : 
+
+```
+{
+    "status": 200,
+    "message": "successfully task with questions",
+    "data": {
+        "uid": "LTC-APP-51830a4e-ede7-4097-8f4c-ba7cfc7a9e94-TSK",
+        "level": 1,
+        "sign": "number",
+        "level_category_id": 1,
+        "completed": 0,
+        "questions_list": [
+            {
+                "uid": "LTC-APP-52485f45-7b6d-4881-ba71-60ab731a2067-QST",
+                "category_id": "LTC-APP-generated1",
+                "task_uid": "LTC-APP-51830a4e-ede7-4097-8f4c-ba7cfc7a9e94-TSK",
+                "literacy": "big ass text",
+                "answer": "A",
+                "created_at": "2024-01-14T16:26:01Z",
+                "updated_at": "2024-01-14T16:26:01Z"
+            }
+        ],
+        "created_at": "2024-01-14T18:18:53Z",
+        "updated_at": "2024-01-14T18:18:53Z"
+    }
+}
+```
+
+### 4. Create Task
+
+Method : ```POST```   
+Endpoint : ```/tasks```    
+HTTP Response : 
+- ```200 OK```
+- ```409 Conflict```
+- ```500 Internal Server Error```
+
+Json Required Payload  : 
+Field | Datatype | required
+--- | --- | --- |
+level | number | yes
+sign | string | yes
+level_category_id | number | yes
+
+Response Body : 
+```
+{
+    "status": 200,
+    "message": "successfully create task",
+    "data": {
+        "uid": "LTC-APP-3cdb00d4-71b6-4dd8-851b-eefb414a08c6-TSK",
+        "level": 1,
+        "sign": "number",
+        "level_category_id": 1,
+        "completed": 0,
+        "created_at": "0001-01-01T00:00:00Z",
+        "updated_at": "0001-01-01T00:00:00Z"
+    }
+}
+```
+
+
+### 4. Update Completed Task
+
+
+Method : ```POST```   
+Endpoint : ```/tasks/completed/:taskuid```
+
+Header Required :
+| Name | Detail
+|-- |--
+| Authorization | Firebase Token
+
+Response Body
+
+### 5. Update Task
+
+### 6. Delete Task

@@ -65,6 +65,11 @@ const pages = [
     path: '*',
     render: <NotFound/>,
     title: 'Not Found'
+  },
+  {
+    path: '/',
+    render: <NotFound/>,
+    title: 'Not Found'
   }
 ]
 

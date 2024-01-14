@@ -39,6 +39,7 @@ export default function Sidebar() {
     >
       <div className="text-gray-100 text-xl">
         <div className="p-2.5 mt-1 flex items-center">
+          <img src="/logo.png" alt="" className='w-[30px]' />
           <h1 className="font-bold text-ltccrem text-xl ml-3">Litecartes CMS</h1>
           <i
             className="bi bi-x cursor-pointer ml-28 lg:hidden"

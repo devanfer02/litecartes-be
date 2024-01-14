@@ -39,6 +39,9 @@ func NewMysqlConn() *sql.DB {
         "bootstrap/database/mysql/migrations/create_subscription_table.sql",
         "bootstrap/database/mysql/migrations/create_school_table.sql",
         "bootstrap/database/mysql/migrations/create_user_table.sql",
+        "bootstrap/database/mysql/migrations/create_level_category_table.sql",
+        "bootstrap/database/mysql/migrations/create_task_table.sql",
+        "bootstrap/database/mysql/migrations/create_completed_task_table.sql",
     )
 
 	return db 
@@ -64,6 +67,8 @@ func GenerateSeeders(db *sql.DB) {
     seeders(
         db, 
         "bootstrap/database/mysql/seeders/create_question_category_seeders.sql",
+        "bootstrap/database/mysql/seeders/create_level_category_seeders.sql",
+        "bootstrap/database/mysql/seeders/create_subscription_seeders.sql",
     )
     log.Printf("Seeders Generated!\n")
 }

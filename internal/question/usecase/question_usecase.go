@@ -58,6 +58,22 @@ func(u *questionUsecase) FetchByUID(
     return question, nil 
 }
 
+func(u *questionUsecase) FetchAllByTaskUID(
+    ctx context.Context,
+    taskUID  string, 
+) ([]domain.Question, error) {
+    c, cancel := context.WithTimeout(ctx, u.ctxTimeout)
+    defer cancel()
+
+    questions, err := u.queRepo.FetchAllByTaskUID(c, taskUID)
+
+    if err != nil {
+        return nil, err 
+    }
+
+    return questions, nil 
+}
+
 func(u *questionUsecase) Insert(
     ctx context.Context, 
     question *domain.Question,

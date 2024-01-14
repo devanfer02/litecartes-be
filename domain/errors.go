@@ -27,9 +27,12 @@ func GetCode(err error) int {
         return http.StatusOK
     }
 
-    fmt.Println(err.Error())
     if strings.Contains(err.Error(), "Validation doesn't pass") {
         return http.StatusBadRequest
+    }
+
+    if strings.Contains(err.Error(), "Duplicate entry") {
+        return http.StatusConflict
     }
 
     switch err {
@@ -45,6 +48,7 @@ func GetCode(err error) int {
             return http.StatusUnauthorized
         case ErrUserRegistered : 
             return http.StatusConflict 
+
         default :
             return http.StatusInternalServerError
     }

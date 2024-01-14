@@ -41,18 +41,26 @@ func(m *mysqlQuestionRepository) fetch(
 
     for rows.Next() {
         var question domain.Question
+        var taskUID sql.NullString
         
         err := rows.Scan(
             &question.UID,
             &question.CategoryID,
+            &taskUID,
             &question.Literacy,
             &question.Answer,
+            &question.CreatedAt,
+            &question.UpdatedAt,
         )
 
         if err != nil {
-            log.Printf("[REPOSITORY] failed to scan row. ERR:%s\n", err.Error())
+            log.Printf("[REPOSITORY] failed to scan row in question_repository. ERR:%s\n", err.Error())
             return nil, err 
         }
+
+        if taskUID.Valid {
+            question.TaskUID = taskUID.String
+        } 
 
         questions = append(questions, question)
     }
@@ -66,11 +74,16 @@ func (m *mysqlQuestionRepository) fetchPaged(ctx context.Context, cursor domain.
     var err error 
 
     if cursor.CreatedAt == "" {
-        query = "SELECT question.uid, question_category.category_name, question.literacy, question.answer FROM question JOIN question_category ON question.category_id = question_category.uid ORDER BY question.created_at LIMIT ?"
+        query = `SELECT 
+            question.uid, question_category.category_name, question.task_uid, question.literacy, question.answer, question.created_at, question.updated_at
+            FROM question JOIN question_category ON question.category_id = question_category.uid ORDER BY question.created_at LIMIT ?`
         questions, err = m.fetch(ctx, query, cursor.LimitData)
     } else {
         query = fmt.Sprintf(
-            "SELECT question.uid, question_category.category_name, question.literacy, question.answer FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.created_at %s ? ORDER BY question.created_at LIMIT ?", 
+            `SELECT 
+            question.uid, question_category.category_name, question.task_uid, question.literacy, question.answer, question.created_at, question.updated_at
+            FROM question JOIN question_category ON question.category_id = question_category.uid 
+            WHERE question.created_at %s ? ORDER BY question.created_at LIMIT ?`, 
             utils.GetPaginationOperator(cursor.PointNext),
         )
         questions, err = m.fetch(ctx, query, cursor.CreatedAt, cursor.LimitData)
@@ -90,6 +103,10 @@ func(m *mysqlQuestionRepository) Fetch(
         return nil, nil, domain.ErrServerError
     }
 
+    if len(questions) == 0 {
+        return questions, nil, nil 
+    }
+
     prevPage := utils.CreateCursor(questions[0].CreatedAt, false, cursor.LimitData)
     nextPage := utils.CreateCursor(questions[len(questions)-1].CreatedAt, true, cursor.LimitData)
 
@@ -103,7 +120,7 @@ func(m *mysqlQuestionRepository) FetchOneByArg(
     param,
     arg string,
 ) (domain.Question, error) {
-    query := fmt.Sprintf("SELECT question.uid, question_category.category_name, question.literacy, question.answer FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.%s = ? LIMIT 1", param)
+    query := fmt.Sprintf("SELECT question.uid, question_category.category_name, question.task_uid, question.literacy, question.answer, question.created_at, question.updated_at FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.%s = ? LIMIT 1", param)
 
     questions, err := m.fetch(ctx, query, arg)
 
@@ -116,6 +133,25 @@ func(m *mysqlQuestionRepository) FetchOneByArg(
     }
 
     return questions[0], nil 
+}
+
+func(m *mysqlQuestionRepository) FetchAllByTaskUID(
+    ctx context.Context,
+    taskUID  string, 
+) ([]domain.Question, error) {
+    query := `SELECT 
+        uid, category_id, task_uid, literacy, answer, created_at, updated_at
+        FROM question
+        WHERE task_uid = ?
+    `
+
+    questions, err := m.fetch(ctx, query, taskUID)
+
+    if err != nil {
+        return nil, err 
+    }
+
+    return questions, nil 
 }
 
 func(m *mysqlQuestionRepository) InsertQuestion(
@@ -148,7 +184,7 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
     ctx context.Context, 
     question *domain.Question,
 ) (error) {
-    query := "UPDATE question SET category_id = ?, literacy = ?, answer = ?, updated_at = ? WHERE uid = ?"
+    query := "UPDATE question SET category_id = ?, task_uid = ?, literacy = ?, answer = ?, updated_at = ? WHERE uid = ?"
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
@@ -158,7 +194,7 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
     }
 
     currTime := utils.CurrentTime()
-    rows, err := stmt.ExecContext(ctx, question.CategoryID, question.Literacy, question.Answer, currTime, question.UID)
+    rows, err := stmt.ExecContext(ctx, question.CategoryID, question.TaskUID, question.Literacy, question.Answer, currTime, question.UID)
 
     if err != nil {
         if err == sql.ErrNoRows {

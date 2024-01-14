@@ -21,7 +21,7 @@ export default function UserList() {
   }, [cursorReq, next])
 
   return (
-    <section className="ml-72 mt-16">
+    <section className="ml-72 mt-16 mr-24">
       <div>
         <h1 className="text-2xl font-semibold">Users</h1>
       </div>
@@ -39,7 +39,7 @@ export default function UserList() {
           &gt;
         </button>
       </div>
-      <div className="relative overflow-x-auto mr-24 mt-5">
+      <div className="relative overflow-x-auto mt-5">
         { loading && (
           <div className="p-5 text-center">
             <h1 className=" uppercase text-3xl font-bold text-ltcbrown">

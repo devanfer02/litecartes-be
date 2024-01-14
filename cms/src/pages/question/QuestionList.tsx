@@ -1,9 +1,10 @@
 import axios from "axios"
 import useFetch from "../../utils/useFetch"
 
-interface Question {
+type Question = {
   uid: string 
   category_id: number 
+  task_uid: string
   literacy: string 
   answer: string 
 }
@@ -57,6 +58,9 @@ export default function QuestionList() {
                     <th scope="col" className="px-6 py-3 text-center">
                         Category ID
                     </th>
+                    <th scope="col" className="px-6 py-3 text-center">
+                        Task UID
+                    </th>
                     <th scope="col" className="px-6 py-3">
                         Literacy
                     </th>
@@ -76,6 +80,9 @@ export default function QuestionList() {
                     </th>
                     <td className="px-6 py-4 text-center">
                         { question.category_id }
+                    </td>
+                    <td className="px-6 py-4 text-center"> 
+                      { question.task_uid }
                     </td>
                     <td className="px-6 py-4">
                         { question.literacy }
