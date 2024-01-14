@@ -25,7 +25,7 @@ type CompletedTask struct {
 
 type TaskUsecase interface {
     FetchAll(ctx context.Context, req *PaginationRequest,) ([]Task, *PaginationResponse, error) 
-    FetchTasksByUserUID(ctx context.Context, pageReq *PaginationRequest, userUID string) ([]Task, *PaginationResponse, error)
+    FetchTasksByUserUID(ctx context.Context, pageReq *PaginationRequest, userUID string, categoryID string) ([]Task, *PaginationResponse, error)
     FetchTaskWithQuestions(ctx context.Context,taskUID string) (Task, error)
     InsertTask(ctx context.Context, task *Task) error
     InsertCompletedTask(ctx context.Context, completedTask *CompletedTask) error
@@ -35,7 +35,7 @@ type TaskUsecase interface {
 
 type TaskRepository interface {
     FetchAll(ctx context.Context, cursor Cursor) ([]Task, *PaginationResponse, error) 
-    FetchTasksByUserUID(ctx context.Context, cursor Cursor, userUID string) ([]Task, *PaginationResponse, error)
+    FetchTasksByUserUID(ctx context.Context, cursor Cursor, userUID string, categoryID string) ([]Task, *PaginationResponse, error)
     FetchTaskByUID(ctx context.Context, taskUID string) (Task, error)
     InsertTask(ctx context.Context, task *Task) error
     InsertCompletedTask(ctx context.Context, completedTask *CompletedTask) error

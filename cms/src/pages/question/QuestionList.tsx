@@ -1,5 +1,6 @@
 import axios from "axios"
 import useFetch from "../../utils/useFetch"
+import FlashError from "../../components/FlashError"
 
 type Question = {
   uid: string 
@@ -40,14 +41,7 @@ export default function QuestionList() {
       </div>
       <div className="relative overflow-x-auto mt-5">
         { error ? (
-          <div className="bg-red-600 p-5 text-center">
-            <h1 className="text-white uppercase text-3xl font-bold">
-              ERROR DISPLAYING DATA
-            </h1>
-            <p className="text-white text-lg font-semibold">
-              cek logs for more details
-            </p>
-          </div>
+          <FlashError message={(error as Error).toString()} />
         ) : (
         <table className="w-full text-sm text-left rtl:text-right text-ltc-brown">
             <thead className="text-xs uppercase text-ltccrem bg-ltcbrown">

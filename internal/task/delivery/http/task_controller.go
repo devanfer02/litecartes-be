@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/devanfer02/litecartes/domain"
-    res "github.com/devanfer02/litecartes/http/response"
+	res "github.com/devanfer02/litecartes/http/response"
 	"github.com/devanfer02/litecartes/internal/utils"
 	_mdlwr "github.com/devanfer02/litecartes/middleware"
 
@@ -24,11 +24,10 @@ func InitTaskController(
 
     tR := r.Group("/tasks").Use(_mdlwr.CORS())
     tR.GET("", tCtr.FetchAllTask)
-    tR.GET("/users/:uid", tCtr.FetchTasksByUserUID)
+    tR.GET("/users/:useruid/category/:categoryid", tCtr.FetchTasksByUserUID)
     tR.GET("/:uid", tCtr.FetchTaskQuestions)
     tR.POST("", tCtr.CreateTask)
     tR.POST("/completed/:taskuid", mdlwr.Auth(), tCtr.UpdateCompletedTask)
-    
     tR.PUT("/:uid", tCtr.UpdateTask)
     tR.DELETE("/:uid", tCtr.DeleteTask)
 }
@@ -52,13 +51,14 @@ func(c *TaskController) FetchAllTask(ctx *gin.Context) {
 
 func(c *TaskController) FetchTasksByUserUID(ctx *gin.Context) {
     pageReq, err := domain.GetPageRequest(ctx)
-    userUID := ctx.Param("uid")
+    userUID := ctx.Param("useruid")
+    categoryID := ctx.Param("categoryid")
 
     if utils.ErrNotNil(ctx, err, domain.GetCode(err)) {
         return
     }
 
-    tasks, resp, err := c.taskUcase.FetchTasksByUserUID(ctx.Request.Context(), pageReq, userUID)
+    tasks, resp, err := c.taskUcase.FetchTasksByUserUID(ctx.Request.Context(), pageReq, userUID, categoryID)
     code := domain.GetCode(err)
 
     if utils.ErrNotNil(ctx, err, code) {

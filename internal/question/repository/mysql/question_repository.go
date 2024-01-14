@@ -197,9 +197,6 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
     rows, err := stmt.ExecContext(ctx, question.CategoryID, question.TaskUID, question.Literacy, question.Answer, currTime, question.UID)
 
     if err != nil {
-        if err == sql.ErrNoRows {
-            return domain.ErrNotFound
-        }
         log.Printf("[REPOSITORY] failed to exec statement. ERR:%s\n", err.Error())
         return err 
     }

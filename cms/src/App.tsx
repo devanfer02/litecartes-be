@@ -16,6 +16,8 @@ const QuestionList      = lazy(() => import('./pages/question/QuestionList'))
 const TaskList          = lazy(() => import('./pages/task/TaskList'))
 const AddQuestion       = lazy(() => import('./pages/question/AddQuestion'))
 const EditQuestion      = lazy(() => import('./pages/question/EditQuestion'))
+const AddTask           = lazy(() => import('./pages/task/AddTask'))
+const EditTask          = lazy(() => import('./pages/task/EditTask'))
 
 const protectedPages = [
   {
@@ -39,7 +41,7 @@ const protectedPages = [
     title: 'Add Question'
   },
   {
-    path: '/questions/edit/:id',
+    path: '/questions/edit/:uid',
     render: <EditQuestion/>,
     title: 'Edit Question'
   },
@@ -48,6 +50,16 @@ const protectedPages = [
     render: <TaskList/>,
     title: 'Tasks'
   },
+  {
+    path: '/tasks/add',
+    render: <AddTask/>,
+    title: 'Add Task'
+  },
+  {
+    path: '/tasks/edit/:uid',
+    render: <EditTask/>,
+    title: 'Edit Task' 
+  }
 ]
 
 const pages = [

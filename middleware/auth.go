@@ -12,10 +12,12 @@ func (m *Middleware) Auth() gin.HandlerFunc {
     return func(ctx *gin.Context) {
         headerToken := ctx.GetHeader("Authorization")
 
-        headerToken = strings.Replace(headerToken, "Bearer: ", "", 1)
+        headerToken = strings.Replace(headerToken, "Bearer ", "", 1)
 
         token, err := m.fireAuth.VerifyIDToken(ctx, headerToken)
         if err != nil {
+            fmt.Println(headerToken)
+			fmt.Println(err)
             ctx.AbortWithStatus(http.StatusUnauthorized)
             return 
         }

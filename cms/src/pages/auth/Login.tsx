@@ -1,5 +1,7 @@
 import { ChangeEvent, useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './AuthProvider'
+import axios from 'axios'
 
 interface Payload {
   email: string 
@@ -10,19 +12,25 @@ export default function Login() {
   const [ payload, setPayload ] = useState<Payload>({email:'', password: ''})
   const [ error , setError ] = useState<string | null>(null)
   const { loginUser } = useContext(AuthContext)!
+  const navigate = useNavigate()
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
     setPayload({...payload, [key]: e.target.value})
   }
 
-  const login = () => {
-    loginUser(payload.email, payload.password)
-      .then(() => {
-        window.location.replace('/dashboard')
-      })
-      .catch(() => {
-        setError('Failed to login')
-      })
+  const login = async () => {
+    try {
+      await loginUser(payload.email, payload.password)
+
+      // const token = res.user.getIdToken
+
+      // await axios.post(import.meta.env.VITE_API_URL + '/tasks/completed/LTC-APP-51830a4e-ede7-4097-8f4c-ba7cfc7a9e94-TSK/')
+
+      navigate('/dashboard')
+    } catch (err) {
+      setError('Failed to login')
+      console.log(err)
+    }
   } 
   
 

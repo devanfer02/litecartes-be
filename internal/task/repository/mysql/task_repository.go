@@ -174,6 +174,7 @@ func(m *mysqlTaskRepository) FetchTasksByUserUID(
     ctx context.Context, 
     cursor domain.Cursor,
     userUID string, 
+    categoryID string,
 ) ([]domain.Task, *domain.PaginationResponse, error) {
     query := `SELECT t.*, 
                 CASE WHEN uc.task_uid IS NULL THEN 0 
@@ -184,13 +185,18 @@ func(m *mysqlTaskRepository) FetchTasksByUserUID(
                 INNER JOIN user u ON ct.user_uid = u.uid
                 WHERE u.uid = ?) uc
             ON  t.uid = uc.task_uid
+            WHERE t.level_category_id = ?
 
     `
 
-    tasks, err := m.fetchTaskWithUserCompletion(ctx, query, userUID)
+    tasks, err := m.fetchTaskWithUserCompletion(ctx, query, userUID, categoryID)
 
     if err != nil {
         return nil, nil, domain.ErrServerError
+    }
+
+    if len(tasks) == 0 {
+        return []domain.Task{}, nil, nil
     }
 
     prevPage := utils.CreateCursor(tasks[0].CreatedAt, false, cursor.LimitData)

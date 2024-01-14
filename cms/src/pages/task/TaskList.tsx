@@ -18,7 +18,7 @@ const category: string[] = [
 export default function TaskList() {
   const [ tasks, refetch, error ] = useFetch<Task>(import.meta.env.VITE_API_URL + '/tasks')
 
-  const deleteQuestion = async (uid: string) => {
+  const deleteTask = async (uid: string) => {
     try {
       const res = await axios.delete(import.meta.env.VITE_API_URL + `/tasks/${uid}`)
 
@@ -39,7 +39,7 @@ export default function TaskList() {
           <h1 className="text-2xl font-semibold">Tasks</h1>
         </div>
         <div className="w-1/2 flex justify-end">
-          <a href="/questions/add" className="bg-blue-500 hover:bg-blue-700 duration-300 ease-in-out text-white px-4 py-2 rounded-md">
+          <a href="/tasks/add" className="bg-blue-500 hover:bg-blue-700 duration-300 ease-in-out text-white px-4 py-2 rounded-md">
             Add Task 
           </a>
         </div>
@@ -61,6 +61,9 @@ export default function TaskList() {
                     <th scope="col" className="px-6 py-3">
                         No 
                     </th>
+                    <th scope="col" className="px-6 py-3">
+                        UID
+                    </th>
                     <th scope="col" className="px-6 py-3 text-center">
                         Level
                     </th>
@@ -69,9 +72,6 @@ export default function TaskList() {
                     </th>
                     <th scope="col" className="px-6 py-3">
                         Level Category
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-center">
-                        Answer
                     </th>
                     <th scope="col" className="px-6 py-3 text-center">
                       Action
@@ -84,6 +84,9 @@ export default function TaskList() {
                     <th scope="row" className="px-6 py-4 font-medium text-ltcbrown whitespace-nowrap ">
                         { index + 1 }
                     </th>
+                    <td className="px-6 py-4">
+                        { task.uid }
+                    </td>
                     <td className="px-6 py-4 text-center">
                         { task.level }
                     </td>
@@ -100,7 +103,7 @@ export default function TaskList() {
                         <button 
                           type="button" 
                           className="bg-red-600 hover:bg-red-900 duration-300 ease-in-out mx-1 px-4 py-2 rounded-md"
-                          onClick={() => deleteQuestion(task.uid)}
+                          onClick={() => deleteTask(task.uid)}
                         >
                           Delete Task
                         </button>

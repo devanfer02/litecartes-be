@@ -1,25 +1,47 @@
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 import { ChangeEvent, useState } from "react"
+import FlashError from "../../components/FlashError"
+import Input from "../../components/Input"
 
 interface Question {
   category_id: string 
+  task_uid: string | null
   literacy: string
   answer: string 
 }
 
 export default function AddQuestion() {
-  const [ question, setQuestion ] = useState<Question>({category_id: '', literacy: '', answer: ''})
+  const [ question, setQuestion ] = useState<Question>({category_id: '', task_uid:'', literacy: '', answer: ''})
   const [ error ,setError ] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const addQuestion = async () => {
     try {
-      const res = await axios.post(import.meta.env.VITE_API_URL + '/questions', question)
+    let payload = {}
+
+    if (question.task_uid == '') {
+      payload = {
+        category_id: question.category_id,
+        literacy: question.literacy,
+        answer: question.answer 
+      }
+    } else {
+      payload = question 
+    }
+    
+      const res = await axios.post(import.meta.env.VITE_API_URL + '/questions', payload)
 
       if (res.status != 200) {
         setError(res.data.message)
+        throw new Error(res.data.message)
       }
+
+      navigate('/questions')
+      
     } catch(e) {
       setError((e as Error).toString())
+      
     }
   }
 
@@ -38,16 +60,9 @@ export default function AddQuestion() {
         </div>
       </div>
       { error && (
-        <div className="bg-red-600 p-5 text-center">  
-          <h1 className="text-white uppercase text-xl font-bold">
-            Error Sending Request 
-          </h1>
-          <p className="text-white text-lg font-semibold">
-            Error Message : { error }
-          </p>
-        </div>
+        <FlashError message={error} />
       )}
-      <div className="mt-5 p-5 border border-ltcbrown">
+      <div className="mt-5 p-5 border border-ltcbrown mb-10">
         <div className="mb-5">
           <label htmlFor="category" className="text-xl font-semibold block">
             Category 
@@ -73,6 +88,12 @@ export default function AddQuestion() {
             </option>
           </select>
         </div>
+        <Input 
+          label="Task UID" 
+          type="text" 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, task_uid: e.target.value})}
+          value={question.task_uid!}
+        />
         <div className="mb-5">
           <label htmlFor="literacy" className="text-xl font-semibold block">
             Literacy Text 
@@ -86,17 +107,12 @@ export default function AddQuestion() {
           >
           </textarea>
         </div>
-        <div className="mb-5">
-          <label htmlFor="" className="text-xl font-semibold block">
-            Answer (Formatted)
-          </label>
-          <input 
-            type="text" 
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, answer: e.target.value})}
-            value={question.answer}
-            className="border border-ltcbrown px-2 py-2 w-full mt-2 rounded-md focus:outline-none focus:border-sky-500"
-          />
-        </div>
+        <Input 
+          label="Answer (Formatted)" 
+          type="text" 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, answer: e.target.value})}
+          value={ question.answer }
+        />
         <div className="mb-5">
           <button type="button" onClick={addQuestion} className="border border-ltcbrown text-white bg-ltcbrown px-4 py-2 rounded-lg duration-300 ease-in-out hover:bg-white hover:text-ltcbrown">
             Add Question

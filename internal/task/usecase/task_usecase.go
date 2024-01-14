@@ -47,6 +47,7 @@ func(u *taskUsecase) FetchTasksByUserUID(
     ctx context.Context,
     req *domain.PaginationRequest,
     userUID string, 
+    categoryID string,
 ) ([]domain.Task, *domain.PaginationResponse, error) {
 
     cursor, err := utils.GetCursor(req)
@@ -58,7 +59,7 @@ func(u *taskUsecase) FetchTasksByUserUID(
     c, cancel := context.WithTimeout(ctx, u.ctxTimeout)
     defer cancel()
 
-    tasks, pageResp, err := u.taskRepo.FetchTasksByUserUID(c, cursor, userUID)
+    tasks, pageResp, err := u.taskRepo.FetchTasksByUserUID(c, cursor, userUID, categoryID)
 
     if err != nil {
         return nil, nil, err 

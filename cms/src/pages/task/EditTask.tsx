@@ -1,7 +1,7 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import FlashError from "../../components/FlashError"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Input from "../../components/Input"
 
 type Task = {
@@ -14,11 +14,12 @@ type Task = {
 export default function AddTask() {
   const [ task, setTask ] = useState<Task>({level: 0, sign: '', level_category_id: 0})
   const [ error, setError ] = useState<string | null>(null)
+  const { uid } = useParams()
   const navigate = useNavigate()
 
-  const addTask = async () => {
+  const updateTask = async () => {
     try {
-      const res =  await axios.post(import.meta.env.VITE_API_URL + '/tasks', task)
+      const res =  await axios.put(import.meta.env.VITE_API_URL + `/tasks/${uid}`, task)
 
       if (res.status != 200) {
         throw new Error(res.data.message)
@@ -30,12 +31,30 @@ export default function AddTask() {
     }
   }
 
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const res = await axios.get(import.meta.env.VITE_API_URL + `/tasks/${uid}`)
+  
+        if (res.status != 200) {
+          throw new Error(res.data.message)
+        }
+  
+        setTask(res.data.data)
+      } catch (e) {
+        setError((e as Error).toString()) 
+      }
+    }
+
+    fetchTask()
+  }, [uid])
+
   return (
     <section className="ml-72 mt-16 mr-24">
       <div className="flex">
         <div className="w-1/2">
           <h1 className="text-2xl font-semibold">
-            Add Question
+            Edit Task
           </h1>
         </div>
         <div className="w-1/2 flex justify-end ">
@@ -50,7 +69,7 @@ export default function AddTask() {
       <div className="mt-5 p-5 border border-ltcbrown mb-10">
         <div className="mb-5">
           <label htmlFor="category" className="text-xl font-semibold block">
-            Task
+            Category 
           </label>
           <select name="category" id="" className="bg-ltcbrown text-white px-3 py-1 mt-2 rounded-md">
             <option 
@@ -92,8 +111,8 @@ export default function AddTask() {
           value={task.sign}
         />
         <div className="mb-5">
-          <button type="button" onClick={addTask} className="border border-ltcbrown text-white bg-ltcbrown px-4 py-2 rounded-lg duration-300 ease-in-out hover:bg-white hover:text-ltcbrown">
-            Add Task
+          <button type="button" onClick={updateTask} className="border border-ltcbrown text-white bg-ltcbrown px-4 py-2 rounded-lg duration-300 ease-in-out hover:bg-white hover:text-ltcbrown">
+            Update Task
           </button>
         </div>
       </div>

@@ -333,7 +333,7 @@ Response Body :
 ### 2. Fetch Task By User UID
 
 Method : ```GET```    
-Endpoint : ```/tasks/users/:uid```    
+Endpoint : ```/tasks/users/:useruid/category/:categoryid```    
 HTTP Response : 
 - ```200 OK```
 - ```500 Internal Server Error```
@@ -438,7 +438,6 @@ Response Body :
 
 ### 4. Update Completed Task
 
-
 Method : ```POST```   
 Endpoint : ```/tasks/completed/:taskuid```
 
@@ -448,7 +447,16 @@ Header Required :
 | Authorization | Firebase Token
 
 Response Body
+```
+
+```
 
 ### 5. Update Task
 
+Method : ```PUT```   
+Endpoint : ```/tasks/:uid```
+
 ### 6. Delete Task
+
+Method : ```DELETE```   
+Endpoint : ```/tasks/:uid```
