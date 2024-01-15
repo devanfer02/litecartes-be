@@ -72,7 +72,6 @@ func(u *userUsecase) FetchByUsername(
     return user, nil 
 }
 
-
 func(u *userUsecase) FetchByUID(
     ctx context.Context,
     uid string,

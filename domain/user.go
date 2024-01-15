@@ -34,6 +34,7 @@ type UserUpdate struct {
 type UserRepository interface {
     Fetch(ctx context.Context, cursor Cursor) ([]User, *PaginationResponse, error)
     FetchOneByArg(ctx context.Context, param, arg string) (User, error)
+    FetchUsersLike(ctx context.Context, param, arg string) ([]User, error) 
     InsertUser(ctx context.Context, user *User) error
     UpdateUser(ctx context.Context, user *UserUpdate) error
     DeleteUser(ctx context.Context, uid string) error

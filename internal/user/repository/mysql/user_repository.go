@@ -113,6 +113,22 @@ func(m *mysqlUserRepository) Fetch(
     return users, &pageResponse, nil 
 }
 
+func(m *mysqlUserRepository) FetchUsersLike(
+    ctx context.Context,
+    param, 
+    arg string,
+) ([]domain.User, error) {
+    query := fmt.Sprintf("SELECT * FROM user WHERE %s LIKE ?", param)
+
+    users, err := m.fetch(ctx, query, arg)
+
+    if err != nil {
+        return nil, err 
+    }
+
+    return users, nil
+}
+
 func(m *mysqlUserRepository) FetchOneByArg(
     ctx context.Context, 
     param,

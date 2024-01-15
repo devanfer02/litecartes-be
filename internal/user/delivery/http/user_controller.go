@@ -22,6 +22,7 @@ func InitUserController(ucase domain.UserUsecase, r *gin.Engine) {
     uR := r.Group("/users").Use(_mdlwr.CORS())   
     uR.GET("", uCtr.Fetch)
     uR.GET("/:uid", uCtr.FetchByUID)
+    uR.GET("/username/:username", uCtr.FetchUsersByUsername)
     uR.POST("/:uid", uCtr.RegisterUser)
     uR.PUT("/:uid", uCtr.UpdateUser)
     uR.DELETE("/:uid", uCtr.DeleteUser)
@@ -55,6 +56,19 @@ func(c *UserController) FetchByUID(ctx *gin.Context) {
     }
 
     res.SendResponse(ctx, code, "successfully fech users", user, nil)
+}
+
+func(c *UserController) FetchUsersByUsername(ctx *gin.Context) {
+    username := ctx.Param("username")
+
+    users, err := c.userUcase.FetchUsersByUsername(ctx.Request.Context(), username)
+    code := domain.GetCode(err)
+
+    if utils.ErrNotNil(ctx, err, code) {
+        return 
+    }
+
+    res.SendResponse(ctx, code, "successfully fetch users by username", users, nil)
 }
 
 func(c *UserController) RegisterUser(ctx *gin.Context) {
