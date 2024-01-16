@@ -105,6 +105,10 @@ func(m *mysqlUserRepository) Fetch(
         return nil, nil, domain.ErrServerError
     }
 
+    if len(users) == 0 {
+        return []domain.User{}, nil, nil 
+    }
+
     prevPage := utils.CreateCursor(users[0].CreatedAt, false, cursor.LimitData)
     nextPage := utils.CreateCursor(users[len(users)-1].CreatedAt, true, cursor.LimitData)
 
@@ -142,6 +146,7 @@ func(m *mysqlUserRepository) FetchOneByArg(
         return domain.User{}, domain.ErrServerError 
     }
 
+    log.Println(len(users))
     if len(users) == 0 {
         return domain.User{}, domain.ErrNotFound
     }

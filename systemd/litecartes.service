@@ -1,0 +1,17 @@
+[Unit]
+Description=Litecartes Service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/Projects/Litecartes/litecartes-be
+ExecStart=/home/ubuntu/Projects/Litecartes/litecartes-be/main
+
+Restart=on-failure
+RestartSec=10
+
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=default.target

@@ -98,7 +98,7 @@ func(u *userUsecase) FetchByUID(
     user, err := u.userRepo.FetchOneByArg(c, "uid", uid)
 
     if err != nil {
-        return domain.User{}, nil 
+        return domain.User{}, err 
     }
 
     return user, nil 
