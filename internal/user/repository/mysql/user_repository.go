@@ -48,10 +48,11 @@ func(m *mysqlUserRepository) fetch(
             &user.Username  ,
             &user.Email     ,
             &user.SubID     ,
-            &schoolId  ,
+            &schoolId       ,
             &user.TotalExp  ,
             &user.Gems      ,
             &user.Streaks   ,
+            &user.Level     , 
             &user.LastActive,
             &user.Role      ,
             &user.CreatedAt ,
@@ -146,7 +147,6 @@ func(m *mysqlUserRepository) FetchOneByArg(
         return domain.User{}, domain.ErrServerError 
     }
 
-    log.Println(len(users))
     if len(users) == 0 {
         return domain.User{}, domain.ErrNotFound
     }
@@ -158,8 +158,8 @@ func(m *mysqlUserRepository) InsertUser(
     ctx context.Context,
     user *domain.User,
 ) (error) {
-    query := `INSERT INTO user (uid, username, email, last_active, created_at, updated_at) 
-                VALUES (?, ?, ?, ?, ?, ?)`
+    query := `INSERT INTO user (uid, username, email, level, last_active, created_at, updated_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)`
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
@@ -175,6 +175,7 @@ func(m *mysqlUserRepository) InsertUser(
         user.UID, 
         user.Username, 
         user.Email, 
+        user.Level,
         currTime,
         currTime,
         currTime,
@@ -192,12 +193,12 @@ func(m *mysqlUserRepository) UpdateUser(
     ctx context.Context, 
     user *domain.UserUpdate,
 ) (error) {
-    query := "UPDATE user SET username = ?, email = ?, subscription_id = ?, school_id = ?, total_exp = ?, gems = ?, streaks = ?, last_active = ?, updated_at = ? WHERE uid = ?"
+    query := "UPDATE user SET username = ?, email = ?, subscription_id = ?, school_id = ?, total_exp = ?, gems = ?, streaks = ?, level = ?, last_active = ?, updated_at = ? WHERE uid = ?"
 
     if user.SchoolID != nil && *user.SchoolID == 0 {
         return domain.ErrBadRequest
     } else if user.SchoolID == nil {
-        query = "UPDATE user SET username = ?, email = ?, subscription_id = ?, total_exp = ?, gems = ?, streaks = ?, last_active = ?, updated_at = ? WHERE uid = ?"
+        query = "UPDATE user SET username = ?, email = ?, subscription_id = ?, total_exp = ?, gems = ?, streaks = ?, level = ?, last_active = ?, updated_at = ? WHERE uid = ?"
     }
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
@@ -220,6 +221,7 @@ func(m *mysqlUserRepository) UpdateUser(
             user.TotalExp, 
             user.Gems, 
             user.Streaks, 
+            user.Level,
             currTime, 
             currTime, 
             user.UID,
@@ -234,6 +236,7 @@ func(m *mysqlUserRepository) UpdateUser(
             user.TotalExp, 
             user.Gems, 
             user.Streaks, 
+            user.Level,
             currTime, 
             currTime, 
             user.UID,

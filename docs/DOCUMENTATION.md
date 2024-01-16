@@ -88,9 +88,9 @@ Response Body
 ```
 
 ### 3. Register User
-NB : this endpoint will store firebase authenticated user to mysql database, call the API whenever user registered with ```createUserWithEmailAndPassword``` method or ```signInWithGoogle`` once.
-Method : ```POST```
-Endpoint : ```/users/:uid```   
+NB : this endpoint will store firebase authenticated user to mysql database, call the API whenever user registered with ```createUserWithEmailAndPassword``` method or ```signInWithGoogle`` once.  
+Method : ```POST```    
+Endpoint : ```/users/:uid```     
 HTTP Response :    
 - ```200 OK```   
 - ```404 Not Found```

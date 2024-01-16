@@ -7,10 +7,12 @@ CREATE TABLE IF NOT EXISTS user (
     total_exp INTEGER DEFAULT 0,
     gems INTEGER DEFAULT 0,
     streaks INTEGER DEFAULT 1,
+    level INTEGER NOT NULL,     
     last_active DATE DEFAULT CURRENT_DATE,
     role VARCHAR(100) DEFAULT "__litecartes-app-user",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(subscription_id) REFERENCES subscription(id),
-    FOREIGN KEY(school_id) REFERENCES school(id)
+    FOREIGN KEY(school_id) REFERENCES school(id),
+    FOREIGN KEY(level) REFERENCES level_category(id)
 ) Engine = InnoDB

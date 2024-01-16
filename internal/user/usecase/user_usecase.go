@@ -126,6 +126,7 @@ func(u *userUsecase) RegisterUser(
         UID: fbUser.UID,
         Username: fbUser.DisplayName,
         Email: fbUser.Email,
+        Level: 1,
     }
 
     c, cancel := context.WithTimeout(ctx, u.ctxTimeout)

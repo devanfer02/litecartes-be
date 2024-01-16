@@ -36,6 +36,10 @@ You can use the manual here or bash script to automatically process some steps
 7. Configure the env
 8. Run the server with command ```$ go run app/main.go``` 
 
+## Credentials Needed
+1. ```config/litecartes-firebase-sdk.json``` : firebase sdk credential
+2. ```python/config/litecartes-gcloud.json``` : google cloud key for vertex api
+
 ## Documentation
 To read more about API documentation and system design, you can read more through this [documentation](./docs/DOCUMENTATION.md)
 

@@ -1,6 +1,6 @@
 INSERT INTO level_category (name) 
 VALUES 
-    ('Litera Cookie'),
+    ('Litera Rookie'),
     ('Voyager'),
     ('Luminary'),
     ('Mastermind');

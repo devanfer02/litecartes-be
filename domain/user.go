@@ -14,6 +14,7 @@ type User struct {
     TotalExp         int64          `json:"total_exp"`
     Gems             int64          `json:"gems"`
     Streaks          int64          `json:"streaks"`
+    Level            int64          `json:"level"`
     LastActive       string         `json:"last_active"`
     Role             string         `json:"role"`
     CreatedAt        time.Time      `json:"created_at"`
@@ -29,6 +30,7 @@ type UserUpdate struct {
     TotalExp         *int64         `json:"total_exp" validate:"required"`
     Gems             *int64         `json:"gems" validate:"required"`
     Streaks          *int64         `json:"streaks" validate:"required"`
+    Level            int64          `json:"level" validate:"required"`
 }
 
 type UserRepository interface {

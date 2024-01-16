@@ -45,7 +45,12 @@ def get_uraian_response():
     literacy = data[EXPECTED_ATTR[0]]
     user_response = data[EXPECTED_ATTR[1]]
 
-    response = model.predict(f"give me rating from 1 to 10 of the user response : {user_response} to the literacy : {literacy}", **params)
+    response = model.predict(f"""
+        give me rating from 1 to 10 with Paul-Elder Critical Thinking Framework of the 
+        user response : {user_response} 
+        to the literacy : {literacy}
+        """
+    , **params)
 
     return jsonify({
         "response": response.text
