@@ -64,3 +64,5 @@ cp "$repo_path" "$services_path"
 sudo systemctl daemon-reload
 sudo systemctl start "$services_name"
 sudo systemctl enable "$services_name"
+
+echo "api services created and running"
