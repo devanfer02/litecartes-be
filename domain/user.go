@@ -44,6 +44,7 @@ type UserUsecase interface {
 	Fetch(ctx context.Context, req *PaginationRequest) ([]User, *PaginationResponse, error)
 	FetchByUsername(ctx context.Context, username string) (User, error)
     FetchByUID(ctx context.Context, uid string) (User, error)
+    FetchUsersByUsername(ctx context.Context,username string) ([]User, error)
     RegisterUser(ctx context.Context, uid string) error
 	UpdateUser(ctx context.Context, user *UserUpdate) error 
 	DeleteUser(ctx context.Context, uid string) error 

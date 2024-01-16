@@ -56,6 +56,22 @@ func(u *userUsecase) Fetch(
     return users, pageResp, nil 
 }
 
+func(u *userUsecase) FetchUsersByUsername(
+    ctx context.Context,
+    username string,
+) ([]domain.User, error) {
+    c, cancel := context.WithTimeout(ctx, u.ctxTimeout)
+    defer cancel()
+
+    users, err := u.userRepo.FetchUsersLike(c, "username", username)
+
+    if err != nil {
+        return nil, err 
+    }
+
+    return users, nil 
+}
+
 func(u *userUsecase) FetchByUsername(
     ctx context.Context,
     username string,
