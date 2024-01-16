@@ -17,6 +17,7 @@
 ### 1. [User](#user)
 ### 2. [Question](#question)
 ### 3. [Task](#task)
+### 4. [Friend](#friend)
 
 ## User
 ### 1. Fetch All Users    
@@ -460,3 +461,29 @@ Endpoint : ```/tasks/:uid```
 
 Method : ```DELETE```   
 Endpoint : ```/tasks/:uid```
+
+## Friend
+
+### 1. Get Followers
+
+Method : ```GET```     
+Endpoint : ```/friends/followers```    
+Authorization : Required      
+
+### 2. Get Followings
+
+Method : ```GET```     
+Endpoint : ```/friends/followings```    
+Authorization : Required      
+
+### 3. Follow an User
+
+Method : ```POST```     
+Endpoint : ```/friends/followings/:followedid```    
+Authorization : Required      
+
+### 4. Delete a Connection
+
+Method : ```DELETE```     
+Endpoint : ```/friends/:followedid```    
+Authorization : Required      

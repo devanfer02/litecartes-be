@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS user (
     gems INTEGER DEFAULT 0,
     streaks INTEGER DEFAULT 1,
     level INTEGER NOT NULL,     
-    last_active DATE DEFAULT CURRENT_DATE,
+    last_active DATE DEFAULT (CURRENT_DATE),
     role VARCHAR(100) DEFAULT "__litecartes-app-user",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
