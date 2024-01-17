@@ -186,7 +186,7 @@ func(m *mysqlTaskRepository) FetchTasksByUserUID(
                 WHERE u.uid = ?) uc
             ON  t.uid = uc.task_uid
             WHERE t.level_category_id = ?
-
+            ORDER BY t.created_at
     `
 
     tasks, err := m.fetchTaskWithUserCompletion(ctx, query, userUID, categoryID)

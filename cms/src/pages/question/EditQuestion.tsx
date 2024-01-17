@@ -8,6 +8,7 @@ interface Question {
   category_id: string 
   task_uid: string
   literacy: string 
+  question: string
   answer: string 
 }
 
@@ -22,7 +23,7 @@ const category: Category = {
 }
 
 export default function EditQuestion() {
-  const [ question, setQuestion ] = useState<Question>({category_id:'',literacy:'',task_uid:'',answer:''})
+  const [ question, setQuestion ] = useState<Question>({category_id:'',literacy:'',task_uid:'',question:'',answer:''})
   const [ error ,setError ] = useState<string | null>(null)
   const { uid } = useParams()
   const navigate = useNavigate()
@@ -138,6 +139,12 @@ export default function EditQuestion() {
           >
           </textarea>
         </div>
+        <Input
+          label="Question"
+          type="text"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, question: e.target.value})}
+          value={ question.question }
+        />
         <Input 
           label="Answer (Formatted)" 
           type="text" 
