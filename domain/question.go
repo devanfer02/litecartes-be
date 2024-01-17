@@ -13,6 +13,8 @@ type Question struct {
     Literacy    string      `json:"literacy" validate:"required"`
     Question    string      `json:"question" validate:"required"`
     Answer      string      `json:"answer" validate:"required"`
+    Options     string      `json:"options,omitempty"`
+    OptionList  []string    `json:"option_list"`
     CreatedAt   time.Time   `json:"created_at"`
     UpdatedAt   time.Time   `json:"updated_at"`
 }

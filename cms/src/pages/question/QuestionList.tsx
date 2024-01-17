@@ -6,6 +6,7 @@ type Question = {
   uid: string 
   category_id: number 
   task_uid: string
+  title: string
   literacy: string 
   question: string
   answer: string 
@@ -56,6 +57,9 @@ export default function QuestionList() {
                     <th scope="col" className="px-6 py-3 text-center">
                         Task UID
                     </th>
+                    <th scope="col" className="px-6 py-3 text-center">
+                        Title
+                    </th>
                     <th scope="col" className="px-6 py-3">
                         Literacy
                     </th>
@@ -81,6 +85,9 @@ export default function QuestionList() {
                     </td>
                     <td className="px-6 py-4 text-center"> 
                       { question.task_uid }
+                    </td>
+                    <td className="px-6 py-4 text-center"> 
+                      { question.title }
                     </td>
                     <td className="px-6 py-4 ">
                       <span className="block w-[100px] overflow-hidden text-ellipsis">

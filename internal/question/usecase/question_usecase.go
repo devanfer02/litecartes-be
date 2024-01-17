@@ -3,6 +3,8 @@ package usecase
 import (
 	"context"
 	"time"
+    "strings"
+    "fmt"
 
 	"github.com/devanfer02/litecartes/domain"
 	"github.com/devanfer02/litecartes/internal/utils"
@@ -81,6 +83,12 @@ func(u *questionUsecase) Insert(
 
     if err := u.queV10.Struct(question); err != nil {
         return domain.ValidationFailed(err.Error())
+    }
+
+    length := len(strings.Split(question.Options, "|"))
+
+    if length != 4 {
+        return domain.ValidationFailed(fmt.Sprintf("len of splitting: %d", length))
     }
 
     c, cancel := context.WithTimeout(ctx, u.ctxTimeout)

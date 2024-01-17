@@ -7,6 +7,7 @@ import Input from "../../components/Input"
 interface Question {
   category_id: string 
   task_uid: string
+  title: string
   literacy: string 
   question: string
   answer: string 
@@ -23,7 +24,7 @@ const category: Category = {
 }
 
 export default function EditQuestion() {
-  const [ question, setQuestion ] = useState<Question>({category_id:'',literacy:'',task_uid:'',question:'',answer:''})
+  const [ question, setQuestion ] = useState<Question>({category_id:'',literacy:'',title: '', task_uid:'',question:'',answer:''})
   const [ error ,setError ] = useState<string | null>(null)
   const { uid } = useParams()
   const navigate = useNavigate()
@@ -125,6 +126,12 @@ export default function EditQuestion() {
           type="text" 
           onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, task_uid: e.target.value})}
           value={question.task_uid!}
+        />
+        <Input
+          label="Title"
+          type="text"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, title: e.target.value})}
+          value={ question.title }
         />
         <div className="mb-5">
           <label htmlFor="literacy" className="text-xl font-semibold block">

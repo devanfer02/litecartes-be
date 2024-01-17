@@ -7,6 +7,7 @@ import Input from "../../components/Input"
 interface Question {
   category_id: string 
   task_uid: string | null
+  title: string
   literacy: string
   question: string
   answer: string 
@@ -15,8 +16,9 @@ interface Question {
 export default function AddQuestion() {
   const [ question, setQuestion ] = useState<Question>(
     {
-      category_id: '',
+      category_id: 'LTC-APP-generated1',
       task_uid:'',
+      title: '',
       literacy: '',
       question: '',
       answer: ''
@@ -33,6 +35,8 @@ export default function AddQuestion() {
       payload = {
         category_id: question.category_id,
         literacy: question.literacy,
+        question: question.question,
+        title: question.title,
         answer: question.answer 
       }
     } else {
@@ -97,11 +101,11 @@ export default function AddQuestion() {
             </option>
           </select>
         </div>
-        <Input 
-          label="Task UID" 
-          type="text" 
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, task_uid: e.target.value})}
-          value={question.task_uid!}
+        <Input
+          label="Title"
+          type="text"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, title: e.target.value})}
+          value={ question.title }
         />
         <div className="mb-5">
           <label htmlFor="literacy" className="text-xl font-semibold block">

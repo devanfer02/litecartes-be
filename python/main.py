@@ -26,6 +26,26 @@ params = {
 
 model = TextGenerationModel.from_pretrained("text-bison@001")
 
+@app.route('/create/literacy', methods=['POST'])
+def create_new_literacy():
+    response = model.predict(f"""
+        give me a short 1 paragraph literacy text with a title and a question questioning 
+        user about the literacy text and give 4 options to make user choose the correct one. formatted like this : 
+                             
+        title 
+                             
+        literacy text
+
+        question
+
+        4 options                      
+    """, **params
+    )
+
+    return jsonify({
+        "response": response.text
+    }), 200
+
 @app.route('/uraian', methods=['POST'])
 def get_uraian_response():
 
