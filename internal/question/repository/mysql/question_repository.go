@@ -133,7 +133,13 @@ func(m *mysqlQuestionRepository) FetchOneByArg(
     param,
     arg string,
 ) (domain.Question, error) {
-    query := fmt.Sprintf("SELECT question.uid, question_category.category_name, question.task_uid, question.title, question.literacy, question.question, question.answer, question.created_at, question.updated_at FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.%s = ? LIMIT 1", param)
+    query := fmt.Sprintf(`SELECT 
+        question.uid, question_category.category_name, question.task_uid, 
+        question.title, question.literacy, question.question, question.answer, 
+        question.options, question.created_at, question.updated_at 
+        FROM question JOIN question_category ON question.category_id = question_category.uid 
+        WHERE question.%s = ? LIMIT 1`, param,
+    )
 
     questions, err := m.fetch(ctx, query, arg)
 

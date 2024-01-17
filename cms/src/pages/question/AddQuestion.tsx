@@ -6,22 +6,22 @@ import Input from "../../components/Input"
 
 interface Question {
   category_id: string 
-  task_uid: string | null
   title: string
   literacy: string
   question: string
   answer: string 
+  options: string
 }
 
 export default function AddQuestion() {
   const [ question, setQuestion ] = useState<Question>(
     {
       category_id: 'LTC-APP-generated1',
-      task_uid:'',
       title: '',
       literacy: '',
       question: '',
-      answer: ''
+      answer: '',
+      options: ''
     }
   )
   const [ error ,setError ] = useState<string | null>(null)
@@ -29,21 +29,8 @@ export default function AddQuestion() {
 
   const addQuestion = async () => {
     try {
-    let payload = {}
-
-    if (question.task_uid == '') {
-      payload = {
-        category_id: question.category_id,
-        literacy: question.literacy,
-        question: question.question,
-        title: question.title,
-        answer: question.answer 
-      }
-    } else {
-      payload = question 
-    }
     
-      const res = await axios.post(import.meta.env.VITE_API_URL + '/questions', payload)
+      const res = await axios.post(import.meta.env.VITE_API_URL + '/questions', question)
 
       if (res.status != 200) {
         setError(res.data.message)
@@ -131,6 +118,12 @@ export default function AddQuestion() {
           type="text" 
           onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, answer: e.target.value})}
           value={ question.answer }
+        />
+        <Input 
+          label="Options (use '|' sign as separator)" 
+          type="text" 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, options: e.target.value})}
+          value={ question.options }
         />
         <div className="mb-5">
           <button type="button" onClick={addQuestion} className="border border-ltcbrown text-white bg-ltcbrown px-4 py-2 rounded-lg duration-300 ease-in-out hover:bg-white hover:text-ltcbrown">

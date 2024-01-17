@@ -85,7 +85,9 @@ func(u *questionUsecase) Insert(
         return domain.ValidationFailed(err.Error())
     }
 
-    length := len(strings.Split(question.Options, "|"))
+    splitted := strings.Split(question.Options, "|")
+
+    length := len(splitted)
 
     if length != 4 {
         return domain.ValidationFailed(fmt.Sprintf("len of splitting: %d", length))

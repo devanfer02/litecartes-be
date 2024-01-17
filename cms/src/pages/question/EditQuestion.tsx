@@ -11,6 +11,7 @@ interface Question {
   literacy: string 
   question: string
   answer: string 
+  options: string
 }
 
 interface Category {
@@ -24,7 +25,7 @@ const category: Category = {
 }
 
 export default function EditQuestion() {
-  const [ question, setQuestion ] = useState<Question>({category_id:'',literacy:'',title: '', task_uid:'',question:'',answer:''})
+  const [ question, setQuestion ] = useState<Question>({category_id:'',literacy:'',title: '', task_uid:'',question:'',answer:'', options: ''})
   const [ error ,setError ] = useState<string | null>(null)
   const { uid } = useParams()
   const navigate = useNavigate()
@@ -157,6 +158,12 @@ export default function EditQuestion() {
           type="text" 
           onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, answer: e.target.value})}
           value={ question.answer }
+        />
+        <Input 
+          label="Options (use '|' sign as separator)" 
+          type="text" 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion({...question, options: e.target.value})}
+          value={ question.options }
         />
         <div className="mb-5">
           <button type="button" onClick={updateQuestion} className="border border-ltcbrown text-white bg-ltcbrown px-4 py-2 rounded-lg duration-300 ease-in-out hover:bg-white hover:text-ltcbrown">
