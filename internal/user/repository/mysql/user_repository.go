@@ -46,6 +46,7 @@ func(m *mysqlUserRepository) fetch(
         err := rows.Scan(
             &user.UID       ,
             &user.Username  ,
+            &user.DisplayName,
             &user.Email     ,
             &user.SubID     ,
             &schoolId       ,
@@ -158,8 +159,8 @@ func(m *mysqlUserRepository) InsertUser(
     ctx context.Context,
     user *domain.User,
 ) (error) {
-    query := `INSERT INTO user (uid, username, email, level, last_active, created_at, updated_at) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)`
+    query := `INSERT INTO user (uid, username, display_name, email, level, last_active, created_at, updated_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
@@ -174,6 +175,7 @@ func(m *mysqlUserRepository) InsertUser(
         ctx, 
         user.UID, 
         user.Username, 
+        user.DisplayName,
         user.Email, 
         user.Level,
         currTime,
@@ -193,12 +195,12 @@ func(m *mysqlUserRepository) UpdateUser(
     ctx context.Context, 
     user *domain.UserUpdate,
 ) (error) {
-    query := "UPDATE user SET username = ?, email = ?, subscription_id = ?, school_id = ?, total_exp = ?, gems = ?, streaks = ?, level = ?, last_active = ?, updated_at = ? WHERE uid = ?"
+    query := "UPDATE user SET username = ?, display_name = ?, email = ?, subscription_id = ?, school_id = ?, total_exp = ?, gems = ?, streaks = ?, level = ?, last_active = ?, updated_at = ? WHERE uid = ?"
 
     if user.SchoolID != nil && *user.SchoolID == 0 {
         return domain.ErrBadRequest
     } else if user.SchoolID == nil {
-        query = "UPDATE user SET username = ?, email = ?, subscription_id = ?, total_exp = ?, gems = ?, streaks = ?, level = ?, last_active = ?, updated_at = ? WHERE uid = ?"
+        query = "UPDATE user SET username = ?, display_name = ?, email = ?, subscription_id = ?, total_exp = ?, gems = ?, streaks = ?, level = ?, last_active = ?, updated_at = ? WHERE uid = ?"
     }
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
@@ -230,6 +232,7 @@ func(m *mysqlUserRepository) UpdateUser(
         rows, err = stmt.ExecContext(
             ctx, 
             user.Username, 
+            user.DisplayName,
             user.Email, 
             user.SubID, 
             user.SchoolID,

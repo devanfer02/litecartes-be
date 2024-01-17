@@ -125,6 +125,7 @@ func(u *userUsecase) RegisterUser(
     user := &domain.User{
         UID: fbUser.UID,
         Username: fbUser.DisplayName,
+        DisplayName: "User",
         Email: fbUser.Email,
         Level: 1,
     }

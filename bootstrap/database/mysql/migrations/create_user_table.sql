@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS user (
     uid VARCHAR(255) PRIMARY KEY,
     username VARCHAR(255) NOT NULL, 
+    display_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL, 
     subscription_id INTEGER DEFAULT 1,
     school_id INTEGER DEFAULT NULL, 

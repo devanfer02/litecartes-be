@@ -8,6 +8,7 @@ import (
 type User struct {
     UID              string         `json:"uid"`
     Username         string         `json:"username"`
+    DisplayName      string         `json::"display_name"`
     Email            string         `json:"email"`
     SubID            int64          `json:"subscription_id"`
     SchoolID         int64          `json:"school_id"`     
@@ -24,6 +25,7 @@ type User struct {
 type UserUpdate struct {
     UID              string         `json:"uid"`
     Username         string         `json:"username" validate:"required"`
+    DisplayName      string         `json:"display_name" validate:"required"`
     Email            string         `json:"email" validate:"required"`
     SubID            *int64         `json:"subscription_id" validate:"required"`
     SchoolID         *int64         `json:"school_id"`     
