@@ -10,6 +10,7 @@ type Question struct {
     CategoryID  string      `json:"category_id" validate:"required"`
     TaskUID     string      `json:"task_uid"`
     Literacy    string      `json:"literacy" validate:"required"`
+    Question    string      `json:"question" validate:"required"`
     Answer      string      `json:"answer" validate:"required"`
     CreatedAt   time.Time   `json:"created_at"`
     UpdatedAt   time.Time   `json:"updated_at"`
