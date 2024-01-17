@@ -67,7 +67,6 @@ func(m *mysqlQuestionRepository) fetch(
         } 
 
         question.OptionList = strings.Split(question.Options, "|")
-        question.Options = ""
 
         questions = append(questions, question)
     }

@@ -115,6 +115,14 @@ func(u *questionUsecase) Update(
         return domain.ValidationFailed(err.Error())
     }
 
+    splitted := strings.Split(question.Options, "|")
+
+    length := len(splitted)
+
+    if length != 4 {
+        return domain.ValidationFailed(fmt.Sprintf("len of splitting: %d", length))
+    }
+
     c, cancel := context.WithTimeout(ctx, u.ctxTimeout)
     defer cancel()
 
