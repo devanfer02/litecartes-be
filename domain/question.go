@@ -9,6 +9,7 @@ type Question struct {
     UID         string      `json:"uid"`
     CategoryID  string      `json:"category_id" validate:"required"`
     TaskUID     string      `json:"task_uid"`
+    Title       string      `json:"title" validate:"required"`
     Literacy    string      `json:"literacy" validate:"required"`
     Question    string      `json:"question" validate:"required"`
     Answer      string      `json:"answer" validate:"required"`

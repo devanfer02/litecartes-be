@@ -42,7 +42,7 @@ func(c *UserController) Fetch(ctx *gin.Context) {
         return 
     }
 
-    res.SendResponse(ctx, code, "successfully fech users", users, resp)
+    res.SendResponse(ctx, code, "successfully fetch users", users, resp)
 }
 
 func(c *UserController) FetchByUID(ctx *gin.Context) {

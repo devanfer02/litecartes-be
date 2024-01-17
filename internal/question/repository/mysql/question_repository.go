@@ -47,6 +47,7 @@ func(m *mysqlQuestionRepository) fetch(
             &question.UID,
             &question.CategoryID,
             &taskUID,
+            &question.Title,
             &question.Literacy,
             &question.Question,
             &question.Answer,
@@ -76,13 +77,13 @@ func (m *mysqlQuestionRepository) fetchPaged(ctx context.Context, cursor domain.
 
     if cursor.CreatedAt == "" {
         query = `SELECT 
-            question.uid, question_category.category_name, question.task_uid, question.literacy, question.question, question.answer, question.created_at, question.updated_at
+            question.uid, question_category.category_name, question.task_uid, question.title, question.literacy, question.question, question.answer, question.created_at, question.updated_at
             FROM question JOIN question_category ON question.category_id = question_category.uid ORDER BY question.created_at LIMIT ?`
         questions, err = m.fetch(ctx, query, cursor.LimitData)
     } else {
         query = fmt.Sprintf(
             `SELECT 
-            question.uid, question_category.category_name, question.task_uid, question.literacy, question.question, question.answer, question.created_at, question.updated_at
+            question.uid, question_category.category_name, question.task_uid, question.title, question.literacy, question.question, question.answer, question.created_at, question.updated_at
             FROM question JOIN question_category ON question.category_id = question_category.uid 
             WHERE question.created_at %s ? ORDER BY question.created_at LIMIT ?`, 
             utils.GetPaginationOperator(cursor.PointNext),
@@ -121,7 +122,7 @@ func(m *mysqlQuestionRepository) FetchOneByArg(
     param,
     arg string,
 ) (domain.Question, error) {
-    query := fmt.Sprintf("SELECT question.uid, question_category.category_name, question.task_uid, question.literacy, question.question, question.answer, question.created_at, question.updated_at FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.%s = ? LIMIT 1", param)
+    query := fmt.Sprintf("SELECT question.uid, question_category.category_name, question.task_uid, question.title, question.literacy, question.question, question.answer, question.created_at, question.updated_at FROM question JOIN question_category ON question.category_id = question_category.uid WHERE question.%s = ? LIMIT 1", param)
 
     questions, err := m.fetch(ctx, query, arg)
 
@@ -159,8 +160,8 @@ func(m *mysqlQuestionRepository) InsertQuestion(
     ctx context.Context,
     question *domain.Question,
 ) (error) {
-    query := `INSERT INTO question (uid, category_id, literacy, question, answer, created_at, updated_at) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)`
+    query := `INSERT INTO question (uid, category_id, title, literacy, question, answer, created_at, updated_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
@@ -175,6 +176,7 @@ func(m *mysqlQuestionRepository) InsertQuestion(
         ctx, 
         question.UID, 
         question.CategoryID, 
+        question.Title,
         question.Literacy, 
         question.Question, 
         question.Answer, 
@@ -194,7 +196,7 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
     ctx context.Context, 
     question *domain.Question,
 ) (error) {
-    query := "UPDATE question SET category_id = ?, task_uid = ?, literacy = ?, question = ?, answer = ?, updated_at = ? WHERE uid = ?"
+    query := "UPDATE question SET category_id = ?, task_uid = ?, title = ?, literacy = ?, question = ?, answer = ?, updated_at = ? WHERE uid = ?"
 
     stmt, err := m.Conn.PrepareContext(ctx, query)
 
@@ -208,6 +210,7 @@ func(m *mysqlQuestionRepository) UpdateQuestion(
         ctx, 
         question.CategoryID, 
         question.TaskUID, 
+        question.Title,
         question.Literacy, 
         question.Question, 
         question.Answer,

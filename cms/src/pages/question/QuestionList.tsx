@@ -82,8 +82,10 @@ export default function QuestionList() {
                     <td className="px-6 py-4 text-center"> 
                       { question.task_uid }
                     </td>
-                    <td className="px-6 py-4">
-                        { question.literacy }
+                    <td className="px-6 py-4 ">
+                      <span className="block w-[100px] overflow-hidden text-ellipsis">
+                        { question.literacy.substring(0, 100) }
+                      </span>
                     </td>
                     <td className="px-6 py-4">
                         { question.question }
