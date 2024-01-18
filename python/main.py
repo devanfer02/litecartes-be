@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-from vertexai.preview.generative_models import GenerativeModel
 from vertexai.language_models import TextGenerationModel
 from dotenv import load_dotenv
 import os 
