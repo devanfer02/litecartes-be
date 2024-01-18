@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-    "net/http"
 	"database/sql"
 	"time"
 
@@ -25,11 +24,7 @@ import (
 )
 
 func InitRoutes(r *gin.Engine, sqldb *sql.DB) {
-    r.GET("/health", func(ctx *gin.Context) {
-        ctx.JSON(http.StatusOK, gin.H{
-            "message": "server running",
-        })
-    })
+    r.GET("/health", GetHealthCheck(sqldb))
 
     fireAuth := _firebase.GetAuthClient()
     
