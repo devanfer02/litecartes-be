@@ -43,6 +43,9 @@ You can use the manual here or bash script to automatically process some steps
 ## Documentation
 To read more about API documentation and system design, you can read more through this [documentation](./docs/DOCUMENTATION.md)
 
+## Client Side
+For client side repository, you can take a look in this [github repository](https://github.com/ryoaditarta/litecartesProject-FrontEnd)
+
 ## CMS
 Litecartes also provides content management system to interact with server like adding item, editing item, etc easier, you can take a look at our CMS in this [folder](./cms) 
 
