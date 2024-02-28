@@ -4,7 +4,7 @@
 # make sure to execute
 
 pwd_dir=$(pwd)
-curr_dir="${pwd_dir: -12}"
+curr_dir="${pwd_dir: -13}"
 dir_should="litecartes"
 
 if [[ ! $curr_dir == *"$dir_should"* ]]; then 
@@ -16,6 +16,9 @@ fi
 
 if [ ! -f "main" ]; then 
 
+    echo "entry file main.exe not found"
+    echo "building main.exe"
+
     main_path="app/main.go"
 
     if [ ! -f "$main_path" ]; then 
@@ -26,7 +29,7 @@ if [ ! -f "main" ]; then
         exit 1
     fi 
 
-    go build app/main.go
+    go build "$main_path"
 
 fi 
 
